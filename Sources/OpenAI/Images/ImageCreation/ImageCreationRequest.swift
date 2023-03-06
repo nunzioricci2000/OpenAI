@@ -1,15 +1,15 @@
 //
-//  Image.swift
+//  ImageCreationRequest.swift
 //  
 //
-//  Created by Nunzio Ricci on 04/02/23.
+//  Created by Nunzio Ricci on 07/03/23.
 //
 
 import Foundation
 
 /// This object represent requests images to Dall•E
-struct ImageRequest: AIRequest {
-    typealias Response = ImageResponse
+struct ImageCreationRequest: AIRequest {
+    typealias Response = ImageCreationResponse
     static let path: String = "v1/images/generations"
     static let method: String = "POST"
     
@@ -37,11 +37,11 @@ struct ImageRequest: AIRequest {
          format: ImageFormat? = nil,
          user: String? = nil) throws {
         guard description.count <= 1000 else {
-            throw ImageResponseError.longDescription(length: description.count)
+            throw ImageCreationError.longDescription(length: description.count)
         }
         if let quantity = quantity {
             guard (1...10).contains(quantity) else {
-                throw ImageResponseError.invalidQuantity(quantity: quantity)
+                throw ImageCreationError.invalidQuantity(quantity: quantity)
             }
         }
         self.description = description
@@ -77,26 +77,6 @@ struct ImageRequest: AIRequest {
     }
 }
 
-/// This object contains required images from Dall•E
-struct ImageResponse: AIResponse {
-    var created: Int
-    var data: [ImageResult]
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.created = try container.decode(Int.self, forKey: .created)
-        self.data = try container.decode([ImageResult].self, forKey: .data)
-    }
-    
-    enum CodingKeys: CodingKey {
-        case created
-        case data
-    }
-}
-
-struct ImageResult: Decodable {
-    var url: String
-}
 
 enum ImageSize: String {
     case small = "256x256"
@@ -107,9 +87,4 @@ enum ImageSize: String {
 enum ImageFormat: String {
     case url = "url"
     case b64 = "b64_json"
-}
-
-enum ImageResponseError: Error {
-    case longDescription(length: Int)
-    case invalidQuantity(quantity: Int)
 }

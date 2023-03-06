@@ -1,14 +1,14 @@
 //
-//  File.swift
+//  AIRequest.swift
 //  
 //
-//  Created by Nunzio Ricci on 01/02/23.
+//  Created by Nunzio Ricci on 07/03/23.
 //
+
+import Foundation
 
 protocol AIRequest: Encodable {
     associatedtype Response: AIResponse
     static var path: String { get }
     static var method: String { get }
 }
-
-protocol AIResponse: Decodable {}

@@ -16,7 +16,7 @@ final class ImageTests: XCTestCase {
     let openai = OpenAI(token: "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")
     
     func testRequestEncoding() throws {
-        let request = try ImageRequest(description: "Salve")
+        let request = try ImageCreationRequest(description: "Salve")
         let data = try encoder.encode(request)
         let jsonString = String(data: data, encoding: .utf8)
         XCTAssertEqual(jsonString, "{\"prompt\":\"Salve\"}")
@@ -25,18 +25,18 @@ final class ImageTests: XCTestCase {
     func testResponseDecoding() throws {
         let responseString = "{\"created\": 1678058194, \"data\": [{\"url\": \"https://...\"}]}"
         let responseData = responseString.data(using: .utf8)!
-        let response = try decoder.decode(ImageResponse.self, from: responseData)
+        let response = try decoder.decode(ImageCreationResponse.self, from: responseData)
         XCTAssertEqual(response.created, 1678058194)
         XCTAssertEqual(response.data[0].url, "https://...")
     }
     
     func testPath() {
-        let urlRequest = URLRequest(url: OpenAI.API_URL.appending(path: ImageRequest.path))
+        let urlRequest = URLRequest(url: OpenAI.API_URL.appending(path: ImageCreationRequest.path))
         XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.openai.com/v1/images/generations")
     }
     
     func testPerformAction() async throws {
-        let request = try ImageRequest(description: "A green dog")
+        let request = try ImageCreationRequest(description: "A green dog")
         let response = try await openai.perform(request)
     }
 }
