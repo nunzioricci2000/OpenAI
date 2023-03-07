@@ -13,10 +13,11 @@ final class ImageTests: XCTestCase {
     
     let decoder = JSONDecoder()
     let encoder = JSONEncoder()
-    let openai = OpenAI(token: "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")
+    let openai = OpenAI(token: TestSettings.token)
     
     func testRequestEncoding() throws {
         let request = try ImageCreationRequest(description: "Salve")
+        request.size
         let data = try encoder.encode(request)
         let jsonString = String(data: data, encoding: .utf8)
         XCTAssertEqual(jsonString, "{\"prompt\":\"Salve\"}")

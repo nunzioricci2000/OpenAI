@@ -13,13 +13,18 @@ struct ImageCreationRequest: AIRequest {
     static let path: String = "v1/images/generations"
     static let method: String = "POST"
     
+    /// A text description of the desired image(s). The maximum length is 1000 characters.
     var description: String
+    
+    /// The number of images to generate. Must be between 1 and 10.
     var quantity: Int?
+    
+    /// The size of the generated images.
     var size: ImageSize?
     var format: ImageFormat?
     var user: String?
     
-    /// This object represent requests images to Dall•E
+    /// This object represent images creation request to Dall•E
     ///
     /// - Parameters:
     ///   - description: A text description of the desired image(s). The maximum length is 1000 characters.
