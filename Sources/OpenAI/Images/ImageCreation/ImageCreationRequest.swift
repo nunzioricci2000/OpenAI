@@ -21,7 +21,11 @@ struct ImageCreationRequest: AIRequest {
     
     /// The size of the generated images.
     var size: ImageSize?
+    
+    /// The format in which the generated images are returned.
     var format: ImageFormat?
+    
+    /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
     var user: String?
     
     /// This object represent images creation request to Dall•E
@@ -73,6 +77,14 @@ struct ImageCreationRequest: AIRequest {
         }
     }
     
+    func urlRequest(for url: URL) throws -> URLRequest {
+        var urlRequest = URLRequest(url: url.appending(path: Self.path))
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.httpMethod = Self.method
+        urlRequest.httpBody = try JSONEncoder().encode(self)
+        return urlRequest
+    }
+
     enum CodingKeys: String, CodingKey {
         case description = "prompt"
         case quantity = "n"

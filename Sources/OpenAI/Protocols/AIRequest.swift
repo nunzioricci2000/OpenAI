@@ -11,4 +11,6 @@ protocol AIRequest: Encodable {
     associatedtype Response: AIResponse
     static var path: String { get }
     static var method: String { get }
+    
+    func urlRequest(for url: URL) throws -> URLRequest
 }

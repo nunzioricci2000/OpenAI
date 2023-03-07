@@ -10,11 +10,8 @@ public struct OpenAI {
     }
     
     func perform<Request: AIRequest>(_ request: Request) async throws -> Request.Response {
-        var urlRequest = URLRequest(url: Self.API_URL.appending(path: Request.path))
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        var urlRequest = try request.urlRequest(for: Self.API_URL)
         urlRequest.setValue("Bearer \( token )", forHTTPHeaderField: "Authorization")
-        urlRequest.httpMethod = Request.method
-        urlRequest.httpBody = try JSONEncoder().encode(request)
         let (data, _) = try await URLSession.shared.data(for: urlRequest)
         let response: Request.Response
         do {
