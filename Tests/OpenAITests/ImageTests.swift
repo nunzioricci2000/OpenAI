@@ -17,7 +17,6 @@ final class ImageTests: XCTestCase {
     
     func testRequestEncoding() throws {
         let request = try ImageCreationRequest(description: "Salve")
-        request.size
         let data = try encoder.encode(request)
         let jsonString = String(data: data, encoding: .utf8)
         XCTAssertEqual(jsonString, "{\"prompt\":\"Salve\"}")
