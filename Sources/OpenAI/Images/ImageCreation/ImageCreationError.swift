@@ -10,4 +10,5 @@ import Foundation
 enum ImageCreationError: Error {
     case longDescription(length: Int)
     case invalidQuantity(quantity: Int)
+    case invalidResoponseFormat
 }
